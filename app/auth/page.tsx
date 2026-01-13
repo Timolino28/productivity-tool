@@ -24,6 +24,8 @@ export default function AuthPage() {
 
         if (result?.error) {
             toast.error(result.error)
+        } else {
+            toast.success("Login successful")
         }
     }
 
