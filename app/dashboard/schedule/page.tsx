@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { TaskCard } from '@/components/task-card'
 
 interface Task {
     id: string
@@ -76,24 +77,7 @@ export default async function SchedulePage() {
                         <h3 className="font-semibold text-center text-gray-700">{day}</h3>
                         <div className="space-y-3">
                             {schedule[day].map((task) => (
-                                <Card key={task.id} className="shadow-sm hover:shadow-md transition-shadow cursor-default">
-                                    <CardContent className="p-3">
-                                        <p className="text-sm font-medium leading-none mb-2">{task.title}</p>
-                                        <div className="flex flex-wrap gap-2">
-                                            <Badge variant="outline" className="text-[10px] h-5">
-                                                {task.duration_estimate}m
-                                            </Badge>
-                                            <Badge variant={
-                                                task.category === 'DEEP_WORK' ? 'default' :
-                                                    task.category === 'SHALLOW_WORK' ? 'secondary' : 'outline'
-                                            } className={
-                                                task.category === 'DEEP_WORK' ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 text-[10px] h-5 px-1 py-0' : 'text-[10px] h-5 px-1 py-0'
-                                            }>
-                                                {task.category === 'DEEP_WORK' ? 'Deep' : task.category === 'SHALLOW_WORK' ? 'Shallow' : 'Admin'}
-                                            </Badge>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <TaskCard key={task.id} task={task} />
                             ))}
                             {schedule[day].length === 0 && (
                                 <div className="h-24 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
