@@ -12,6 +12,7 @@ interface Task {
 }
 
 // Naive scheduler: distribute tasks evenly across 5 days
+// Naive scheduler: fill each day up to 8 hours (480 mins) before moving to next
 function generateSchedule(tasks: Task[]) {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     const schedule: Record<string, Task[]> = {
@@ -29,10 +30,20 @@ function generateSchedule(tasks: Task[]) {
         return 0
     })
 
-    // Distribute
-    sortedTasks.forEach((task, index) => {
-        const day = days[index % 5]
+    const MAX_MINUTES_PER_DAY = 480 // 8 hours
+    let currentDayIndex = 0
+    let currentDayMinutes = 0
+
+    sortedTasks.forEach((task) => {
+        // If adding this task exceeds the daily limit and we are not on Friday yet, move to next day
+        if (currentDayMinutes + task.duration_estimate > MAX_MINUTES_PER_DAY && currentDayIndex < 4) {
+            currentDayIndex++
+            currentDayMinutes = 0
+        }
+
+        const day = days[currentDayIndex]
         schedule[day].push(task)
+        currentDayMinutes += task.duration_estimate
     })
 
     return schedule
