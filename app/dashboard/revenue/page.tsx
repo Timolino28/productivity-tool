@@ -44,7 +44,7 @@ export default async function RevenuePage() {
     const shallowMinutes = shallowTasks.reduce((acc, t) => acc + (t.duration_estimate || 0), 0)
 
     const potentialRevenue = (deepWorkMinutes / 60) * hourlyRate
-    const opportunityCost = ((adminMinutes + shallowMinutes) / 60) * hourlyRate
+    const opportunityCost = ((adminMinutes + shallowMinutes * 0.5) / 60) * hourlyRate
 
     return (
         <div className="max-w-5xl mx-auto space-y-8">
